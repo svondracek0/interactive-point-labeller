@@ -1,0 +1,34 @@
+[project]
+name="interactive-point-labeller"
+dependencies = [
+    "bash>=0.6",
+    "pandas>=2.2.3",
+]
+version = "0.0.0"
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+skip = [
+    ".tox", ".venv", "build", "dist"
+]
