@@ -1,9 +1,9 @@
 [project]
-name = "point_annotator"
+name = "interactive_point_labeller"
 version = "0.1.0"
 description = "A Dash app to annotate points in a scatterplot for time series data."
 authors = [
-    { name = "Stepan Vondracek", email = "svondracek@outlook.com" }
+    { name = "Your Name", email = "your.email@example.com" }
 ]
 license = { text = "MIT" }
 readme = "README.md"
@@ -46,11 +46,11 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.urls]
-homepage = "https://github.com/svondracek0/interactive-point-labeller/README.md"
-repository = "https://github.com/svondracek0/interactive-point-labeller"
+homepage = "https://github.com/yourusername/interactive_point_labeller"
+repository = "https://github.com/yourusername/interactive_point_labeller"
 
 [tool.setuptools.packages.find]
-where = ["interactive_point_labeller"]
+where = ["src"]
 
 [project.scripts]
-point-annotator = "interactive_point_labeller:main"
+interactive-point-labeller = "interactive_point_labeller.main:main"
