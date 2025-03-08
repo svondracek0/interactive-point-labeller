@@ -1,11 +1,16 @@
-FROM mtr.devops.telekom.de/ai_incubator/python3.12
+FROM python:3.12
+
 
 # get python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+ENV PORT=8050
 
 COPY . .
 
+RUN pip install .
+
+
 EXPOSE $PORT
 
-CMD python -m src.main
+# Command to run the application
+CMD ["python", "-m", "src.interactive_point_labeller.main"]

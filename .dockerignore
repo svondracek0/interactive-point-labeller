@@ -1,0 +1,17 @@
+# Exclude virtual environments
+.venv
+venv
+
+# Exclude version control directories
+.git
+.gitignore
+
+# Exclude build directories
+build
+dist
+
+# Exclude other unnecessary files
+__pycache__
+*.pyc
+*.pyo
+*.pyd

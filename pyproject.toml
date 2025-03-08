@@ -1,10 +1,18 @@
 [project]
-name="interactive-point-labeller"
-dependencies = [
-    "bash>=0.6",
-    "pandas>=2.2.3",
+name = "interactive_point_labeller"
+version = "0.1.0"
+description = "A Dash app to annotate points in a scatterplot for time series data."
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
 ]
-version = "0.0.0"
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "dash>=2.18.2",
+    "pandas>=2.2.3",
+    "plotly>=5.15.0"
+]
 
 [tool.black]
 line-length = 120
@@ -32,3 +40,17 @@ multi_line_output = 3
 skip = [
     ".tox", ".venv", "build", "dist"
 ]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+homepage = "https://github.com/yourusername/interactive_point_labeller"
+repository = "https://github.com/yourusername/interactive_point_labeller"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+interactive-point-labeller = "interactive_point_labeller.main:main"
