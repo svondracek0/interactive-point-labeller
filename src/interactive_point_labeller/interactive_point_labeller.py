@@ -5,7 +5,6 @@ from plotly import graph_objs as go, express as px
 import base64
 import io
 import json
-import os
 from logging import getLogger
 import logging
 
@@ -19,7 +18,7 @@ class InteractivePointLabeller:
     """
     def __init__(self, x_axis_var: str = "date", y_axis_var: str = "value", annotated_var: str = "outlier",
                  annotation_options: tuple[str] = ("no-outlier", "point", "seasonal"),
-                 download_dir: str | None = None):
+                 download_dir: str | None = None, port: int = 8050, host: str = "0.0.0.0"):
         """
         :param x_axis_var: Variable to be plotted on the x-axis
         :param y_axis_var: Variable to be plotted on the y-axis
@@ -36,6 +35,8 @@ class InteractivePointLabeller:
         self.configure_layout()
         self.configure_callbacks()
         self.download_dir = download_dir
+        self.port = port
+        self.host = host
 
     def configure_layout(self):
         self.app.layout = html.Div([
@@ -198,4 +199,4 @@ class InteractivePointLabeller:
         return values[(val_index + 1) % len(values)]
 
     def run(self):
-        self.app.run_server(debug=True)
+        self.app.run_server(debug=True, port=self.port, host=self.host)
