@@ -3,7 +3,7 @@ name = "interactive_point_labeller"
 version = "0.1.0"
 description = "A Dash app to annotate points in a scatterplot for time series data."
 authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+    { name = "Stepan Vondracek", email = "stepan.vondracek@outlook.com" }
 ]
 license = { text = "MIT" }
 readme = "README.md"
