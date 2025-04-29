@@ -1,12 +1,13 @@
-import dash
-from dash import dcc, html, Input, Output, State
-import pandas as pd
-from plotly import graph_objs as go, express as px
 import base64
 import io
 import json
-from logging import getLogger
 import logging
+from logging import getLogger
+
+import dash
+import pandas as pd
+from dash import dcc, html, Input, Output, State
+from plotly import graph_objs as go, express as px
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = getLogger(__name__)
@@ -16,6 +17,7 @@ class InteractivePointLabeller:
     """
     First version of the dash app to annotate points in a scatterplot (meant to be for time series purposes at first
     """
+
     def __init__(self, x_axis_var: str = "date", y_axis_var: str = "value", annotated_var: str = "outlier",
                  annotation_options: tuple[str] = ("no-outlier", "point", "seasonal"),
                  download_dir: str | None = None, port: int = 8050, host: str = "0.0.0.0"):
@@ -37,6 +39,9 @@ class InteractivePointLabeller:
         self.download_dir = download_dir
         self.port = port
         self.host = host
+
+    def run(self):
+        self.app.run_server(debug=True, port=self.port, host=self.host)
 
     def configure_layout(self):
         self.app.layout = html.Div([
@@ -92,10 +97,8 @@ class InteractivePointLabeller:
                 content_type, content_string = contents.split(',')
                 decoded = base64.b64decode(content_string)
                 df = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
-                df['annotated'] = 0
                 if self.annotated_var not in df.columns:
                     df[self.annotated_var] = self.annotation_options[0]
-                df[self.annotated_var] = self.annotation_options[0]
                 return df.to_json(date_format='iso', orient='split'), filename
 
             elif trigger == 'scatter-plot':
@@ -142,8 +145,11 @@ class InteractivePointLabeller:
                     x=df[self.x_axis_var],
                     y=df[self.y_axis_var],
                     mode='markers',
-                    marker_color=df[self.annotated_var].apply(lambda x: colors[self.annotation_options.index(x)]),
-                    showlegend=False  # Hide the default legend
+                    marker=dict(
+                        color=df[self.annotated_var].apply(lambda x: colors[self.annotation_options.index(x)]),
+                        size=15  # Adjust this value to make points larger
+                    ),
+                    showlegend=False  # Hide the default legend,
                 )
             )
 
@@ -164,8 +170,9 @@ class InteractivePointLabeller:
                     go.Scatter(
                         x=[None], y=[None],  # Dummy data
                         mode='markers',
-                        marker=dict(color=colors[self.annotation_options.index(annotation)]),
-                        name=annotation
+                        marker=dict(color=colors[self.annotation_options.index(annotation)], size=15),
+                        name=annotation,
+
                     )
                 )
             title = filename.replace('.csv',
@@ -194,9 +201,7 @@ class InteractivePointLabeller:
             filename = f"{filename.replace('.csv', '')}_annotated.csv"
             return dcc.send_data_frame(df.to_csv, filename=f"{filename.replace('.csv', '')}.csv")
 
-    def yield_next_element_inifinitely(self, current_value, values):
+    @staticmethod
+    def yield_next_element_inifinitely(current_value, values):
         val_index = values.index(current_value)
         return values[(val_index + 1) % len(values)]
-
-    def run(self):
-        self.app.run_server(debug=True, port=self.port, host=self.host)
